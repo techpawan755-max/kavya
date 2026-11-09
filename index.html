@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>A Magic Surprise For You ✨ | for special freiend</title>
+  <!-- Google Fonts for romantic and aesthetic typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       CSS RESET & THEME VARIABLES
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg-dark: #0a0512;
+      --bg-dark-secondary: #130a21;
+      --accent-pink: #ff758c;
+      --accent-purple: #c084fc;
+      --accent-lavender: #e9d5ff;
+      --accent-blush: #ffd1dc;
+      --accent-rose: #ff477e;
+      --accent-gold: #fde68a;
+      --text-light: #ffffff;
+      --text-muted: #e2d9f3;
+      --glass-bg: rgba(255, 255, 255, 0.07);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --shadow-glow: 0 0 35px rgba(255, 117, 140, 0.45);
+      --font-display: 'Playfair Display', serif;
+      --font-handwriting: 'Caveat', cursive;
+      --font-script: 'Dancing Script', cursive;
+      --font-body: 'Outfit', sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 15%, #24113a 0%, #110720 50%, #08030f 100%);
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      perspective: 1000px;
+    }
+
+    /* Ambient animated starry & glowing backdrop */
+    .ambient-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    /* Custom needle cursor for popping balloons */
+    .balloon-wrapper {
+      cursor: crosshair;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: floatOrb 18s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, #ff758c, #c084fc);
+      top: 10%;
+      left: 15%;
+      animation-duration: 16s;
+    }
+
+    .orb-2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #7e22ce, #ff477e);
+      bottom: 10%;
+      right: 10%;
+      animation-duration: 22s;
+    }
+
+    .orb-3 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, #ec4899, #8b5cf6);
+      top: 45%;
+      left: 60%;
+      animation-duration: 19s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, -30px) scale(1.12); }
+      100% { transform: translate(-30px, 40px) scale(0.95); }
+    }
+
+    /* Particle canvas */
+    #sparkle-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Main Container */
+    .app-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1100px;
+      padding: 24px 16px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* Top Utility Bar (Sound toggle & customizable name) */
+    .top-controls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 50;
+      display: flex;
+      gap: 10px;
+    }
+
+    .glass-btn-icon {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--text-light);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .glass-btn-icon:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px) scale(1.05);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 6px 20px rgba(255, 117, 140, 0.3);
+    }
+
+    /* ==========================================================================
+       SECTION 1: START SCREEN
+       ========================================================================== */
+    .start-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    .start-screen.hidden {
+      opacity: 0;
+      transform: scale(0.92);
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .envelope-glow {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .envelope-aura {
+      position: absolute;
+      inset: -15px;
+      background: radial-gradient(circle, rgba(255, 117, 140, 0.6) 0%, rgba(192, 132, 252, 0.2) 70%, transparent 100%);
+      border-radius: 50%;
+      filter: blur(12px);
+      animation: pulseGlow 2.5s ease-in-out infinite alternate;
+    }
+
+    .envelope-icon {
+      font-size: 54px;
+      position: relative;
+      z-index: 2;
+      animation: gentleBounce 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 15px rgba(255, 117, 140, 0.7));
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(0.85); opacity: 0.5; }
+      100% { transform: scale(1.2); opacity: 0.9; }
+    }
+
+    @keyframes gentleBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .start-tagline {
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-lavender);
+      opacity: 0.85;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .start-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5.5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 36px;
+      background: linear-gradient(135deg, #ffffff 20%, #ffd1dc 60%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 30px rgba(255, 117, 140, 0.2);
+    }
+
+    /* Glowing Primary Button */
+    .magic-glow-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px 42px;
+      font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+      font-weight: 600;
+      font-family: var(--font-body);
+      color: #ffffff;
+      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 40%, #a855f7 100%);
+      border: none;
+      border-radius: 9999px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 0 25px rgba(255, 117, 140, 0.55),
+                  0 0 60px rgba(168, 85, 247, 0.35),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.6);
+    }
+
+    .magic-glow-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: 0.6s;
+    }
+
+    .magic-glow-btn:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 0 40px rgba(255, 117, 140, 0.8),
+                  0 0 80px rgba(168, 85, 247, 0.6),
+                  inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    }
+
+    .magic-glow-btn:hover::before {
+      left: 100%;
+    }
+
+    .magic-glow-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* ==========================================================================
+       SECTION 2: MESSAGE SEQUENCE
+       ========================================================================== */
+    .message-sequence {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      max-width: 680px;
+      padding: 20px;
+      min-height: 200px;
+      pointer-events: none;
+    }
+
+    .fade-message {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      line-height: 1.4;
+      font-weight: 600;
+      background: linear-gradient(135deg, #ffffff 10%, #ffd1dc 50%, #e9d5ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px rgba(255, 117, 140, 0.4);
+      opacity: 0;
+      transform: translateY(20px) scale(0.96);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: absolute;
+    }
+
+    .fade-message.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .fade-message.exit {
+      opacity: 0;
+      transform: translateY(-20px) scale(1.04);
+      filter: blur(4px);
+    }
+
+    /* ==========================================================================
+       SECTION 3: MINI GAME (BALLOONS)
+       ========================================================================== */
+    .game-layer {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+      pointer-events: none;
+      display: none;
+      overflow: hidden;
+    }
+
+    .game-layer.active {
+      display: block;
+      pointer-events: auto;
+    }
+
+    /* In-game HUD */
+    .game-hud {
+      position: absolute;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: rgba(18, 9, 30, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 12px 28px;
+      border-radius: 9999px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 117, 140, 0.25);
+      animation: slideDownFade 0.6s ease-out;
+      pointer-events: none;
+    }
+
+    @keyframes slideDownFade {
+      0% { transform: translate(-50%, -30px); opacity: 0; }
+      100% { transform: translate(-50%, 0); opacity: 1; }
+    }
+
+    .game-hud-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--accent-lavender);
+      letter-spacing: 0.5px;
+    }
+
+    .game-hud-hearts {
+      display: flex;
+      gap: 8px;
+      font-size: 1.2rem;
+    }
+
+    .hud-heart {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: grayscale(1) opacity(0.35);
+      transform: scale(0.9);
+    }
+
+    .hud-heart.popped {
+      filter: grayscale(0) opacity(1) drop-shadow(0 0 8px #ff477e);
+      transform: scale(1.2);
+    }
+
+    /* Balloon Styles */
+    .balloon-wrapper {
+      position: absolute;
+      bottom: -160px;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      transition: transform 0.15s ease-out;
+      will-change: transform, bottom, left;
+      z-index: 25;
+    }
+
+    .balloon-body {
+      position: relative;
+      width: 84px;
+      height: 104px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      box-shadow: inset 10px 10px 20px rgba(255, 255, 255, 0.4),
+                  inset -8px -8px 18px rgba(0, 0, 0, 0.25),
+                  0 12px 30px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .balloon-shine {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      width: 18px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      transform: rotate(-32deg);
+      filter: blur(1.5px);
+    }
+
+    .balloon-knot {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 10px;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+      filter: brightness(0.85);
+    }
+
+    .balloon-string {
+      position: absolute;
+      bottom: -70px;
+      left: 50%;
+      width: 2px;
+      height: 65px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.2));
+      transform-origin: top center;
+      animation: stringWiggle 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes stringWiggle {
+      0% { transform: rotate(-5deg); }
+      100% { transform: rotate(5deg); }
+    }
+
+    /* Pop Burst Particles */
+    .pop-particle {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 35;
+      animation: explodeParticle 0.75s ease-out forwards;
+    }
+
+    @keyframes explodeParticle {
+      0% {
+        transform: translate(0, 0) scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+      }
+    }
+
+    .pop-number {
+      position: absolute;
+      pointer-events: none;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffd1dc;
+      text-shadow: 0 0 10px #ff477e;
+      z-index: 36;
+      animation: popNumberFloat 0.8s ease-out forwards;
+    }
+
+    @keyframes popNumberFloat {
+      0% { transform: translateY(0) scale(0.6); opacity: 0; }
+      30% { transform: translateY(-15px) scale(1.3); opacity: 1; }
+      100% { transform: translateY(-40px) scale(1); opacity: 0; }
+    }
+
+    /* ==========================================================================
+       SECTION 4 & 5: SURPRISE SCREEN & POLAROIDS
+       ========================================================================== */
+    .surprise-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      max-width: 960px;
+      opacity: 0;
+      transform: scale(0.95) translateY(20px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 20px 10px 40px;
+    }
+
+    .surprise-screen.active {
+      display: flex;
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .birthday-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: rgba(255, 117, 140, 0.15);
+      border: 1px solid rgba(255, 117, 140, 0.35);
+      border-radius: 9999px;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-blush);
+      margin-bottom: 16px;
+      backdrop-filter: blur(8px);
+      animation: pulseSubtle 3s ease-in-out infinite;
+    }
+
+    @keyframes pulseSubtle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .birthday-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 6vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 0%, #ffd1dc 40%, #ff758c 75%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px rgba(255, 117, 140, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .name-editable {
+      position: relative;
+      cursor: pointer;
+      border-bottom: 2px dashed rgba(255, 117, 140, 0.5);
+      padding: 0 4px;
+      transition: all 0.3s;
+    }
+
+    .name-editable:hover {
+      border-bottom-color: #ff758c;
+      text-shadow: 0 0 20px #ff758c;
+    }
+
+    .birthday-subtext {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 620px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .birthday-subtext span {
+      color: var(--accent-blush);
+      font-weight: 500;
+    }
+
+    /* Polaroid Grid */
+    .polaroid-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      width: 100%;
+      max-width: 940px;
+      margin: 10px auto 40px;
+      padding: 10px;
+    }
+
+    /* Individual Polaroid Card */
+    .polaroid-card {
+      background: #ffffff;
+      padding: 12px 12px 22px 12px;
+      border-radius: 4px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: center center;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Charming organic tilts */
+    .polaroid-card:nth-child(1) { transform: rotate(-3.5deg); }
+    .polaroid-card:nth-child(2) { transform: rotate(2.5deg); }
+    .polaroid-card:nth-child(3) { transform: rotate(-2deg); }
+    .polaroid-card:nth-child(4) { transform: rotate(3.5deg); }
+
+    .polaroid-card:hover {
+      transform: scale(1.08) rotate(0deg) translateY(-8px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 117, 140, 0.4);
+      z-index: 15;
+    }
+
+    /* Decorative Tape on Top of Polaroid */
+    .polaroid-tape {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 55px;
+      height: 20px;
+      background: rgba(255, 235, 238, 0.65);
+      border: 1px dashed rgba(255, 182, 193, 0.6);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 5;
+    }
+
+    .polaroid-img-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1.1;
+      overflow: hidden;
+      border-radius: 2px;
+      background: #f0e6f2;
+      position: relative;
+    }
+
+    .polaroid-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .polaroid-card:hover .polaroid-img {
+      transform: scale(1.06);
+    }
+
+    .polaroid-caption {
+      margin-top: 14px;
+      font-family: var(--font-handwriting);
+      font-size: 1.35rem;
+      color: #2b1f35;
+      text-align: center;
+      line-height: 1.2;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    .polaroid-date {
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      color: #8c7f99;
+      text-align: center;
+      margin-top: 3px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Action Buttons Under Grid */
+    .reveal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--accent-blush);
+      padding: 12px 26px;
+      border-radius: 9999px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-2px);
+      border-color: rgba(255, 117, 140, 0.5);
+      box-shadow: 0 4px 20px rgba(255, 117, 140, 0.25);
+    }
+
+    /* Modal for enlarged photo view */
+    .photo-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 3, 14, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+
+    .photo-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .photo-modal-content {
+      background: #ffffff;
+      padding: 16px 16px 28px 16px;
+      border-radius: 6px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 117, 140, 0.4);
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    .photo-modal.active .photo-modal-content {
+      transform: scale(1);
+    }
+
+    .photo-modal-img {
+      width: 100%;
+      aspect-ratio: 1 / 1.1;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .photo-modal-caption {
+      font-family: var(--font-handwriting);
+      font-size: 1.8rem;
+      color: #261633;
+      text-align: center;
+      margin-top: 14px;
+      font-weight: 700;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: -18px;
+      right: -18px;
+      width: 40px;
+      height: 40px;
+      background: #ff477e;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Modal for Quick Name Edit */
+    .edit-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 3, 14, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+
+    .edit-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .edit-box {
+      background: #190c29;
+      border: 1px solid rgba(255, 117, 140, 0.3);
+      padding: 28px;
+      border-radius: 20px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .edit-box h3 {
+      font-family: var(--font-display);
+      margin-bottom: 12px;
+      color: #ffd1dc;
+    }
+
+    .edit-input {
+      width: 100%;
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+      color: #fff;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 20px;
+      outline: none;
+      font-family: var(--font-body);
+    }
+
+    .edit-input:focus {
+      border-color: var(--accent-pink);
+      box-shadow: 0 0 15px rgba(255, 117, 140, 0.4);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS (Mobile-first optimization)
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .polaroid-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        max-width: 520px;
+      }
+      
+      .polaroid-card:nth-child(1) { transform: rotate(-2.5deg); }
+      .polaroid-card:nth-child(2) { transform: rotate(2.5deg); }
+      .polaroid-card:nth-child(3) { transform: rotate(-2deg); }
+      .polaroid-card:nth-child(4) { transform: rotate(2deg); }
+    }
+
+    @media (max-width: 540px) {
+      .app-container {
+        padding: 16px 12px;
+      }
+
+      .polaroid-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        padding: 4px;
+      }
+
+      .polaroid-card {
+        padding: 8px 8px 16px 8px;
+      }
+
+      .polaroid-caption {
+        font-size: 1.15rem;
+        margin-top: 8px;
+      }
+
+      .polaroid-date {
+        font-size: 0.6rem;
+      }
+
+      .birthday-badge {
+        font-size: 0.8rem;
+        padding: 6px 16px;
+      }
+
+      .magic-glow-btn {
+        padding: 16px 32px;
+        font-size: 1.05rem;
+        width: 100%;
+        max-width: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Blurred Glow Elements -->
+  <div class="ambient-glow">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
+
+  <!-- Background Twinkling Canvas -->
+  <canvas id="sparkle-canvas"></canvas>
+
+  <!-- Top Utilities -->
+  <div class="top-controls">
+    <button class="glass-btn-icon" id="soundToggle" title="Toggle Sound / Chimes" aria-label="Toggle Sound">
+      <span id="soundIcon">🔊</span>
+    </button>
+  </div>
+
+  <main class="app-container">
+
+    <!-- ========================================================================
+         SCREEN 1: START SCREEN
+         ======================================================================== -->
+    <section class="start-screen" id="startScreen">
+      <div class="envelope-glow">
+        <div class="envelope-aura"></div>
+        <div class="envelope-icon">💌</div>
+      </div>
+      <p class="start-tagline">Special Delivery For You</p>
+      <h1 class="start-title">A Magical Surprise Awaits</h1>
+      <button class="magic-glow-btn" id="startBtn">
+        <span>Click for a Magic Surprise ✨</span>
+      </button>
+    </section>
+
+    <!-- ========================================================================
+         SCREEN 2: MESSAGE SEQUENCE (FADES IN & OUT)
+         ======================================================================== -->
+    <div class="message-sequence" id="messageSequence" aria-live="polite">
+      <div class="fade-message" id="msg1">"I made something special for you..." 💫</div>
+      <div class="fade-message" id="msg2">"Just a little game first..." 🎈</div>
+      <div class="fade-message" id="msg3">"Pop all 5 balloons to unlock your gift! 🎁"</div>
+    </div>
+
+    <!-- ========================================================================
+         SCREEN 3: MINI GAME (5 BALLOONS)
+         ======================================================================== -->
+    <div class="game-layer" id="gameLayer">
+      <!-- In-Game Progress HUD -->
+      <div class="game-hud">
+        <div class="game-hud-title">Pop all the balloons! 🎈</div>
+        <div class="game-hud-hearts" id="hudHearts">
+          <span class="hud-heart">💖</span>
+          <span class="hud-heart">💖</span>
+          <span class="hud-heart">💖</span>
+          <span class="hud-heart">💖</span>
+          <span class="hud-heart">💖</span>
+        </div>
+      </div>
+      <!-- Floating Balloons will be injected dynamically by JavaScript -->
+    </div>
+
+    <!-- ========================================================================
+         SCREEN 4 & 5: FINAL REVEAL & SURPRISE SCREEN
+         ======================================================================== -->
+    <section class="surprise-screen" id="surpriseScreen">
+      <div class="birthday-badge">✨ Happy Celebration Day ✨</div>
+      
+      <h1 class="birthday-title">
+        only for you bestie, <span class="name-editable" id="personName" title="Click to edit name">Alex</span>! ❤️
+      </h1>
+      
+      <p class="birthday-subtext">
+        Wishing you an incredible year ahead filled with love, laughter, and endless dreams come true. 
+        <span>Here are some moments that make everything brighter:</span>
+      </p>
+
+      <!-- Polaroid Grid of 4 Photos (Easily replaceable URLs) -->
+      <div class="polaroid-grid">
+
+        <!-- Polaroid Photo 1 -->
+        <article class="polaroid-card" onclick="openPhotoModal(this)">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-img-wrapper">
+            <!-- REPLACE URL HERE: Photo 1 -->
+            <img class="polaroid-img" 
+                 src="photo1.jpg" 
+                 alt="That unforgettable day" 
+                 loading="lazy">
+          </div>
+          <p class="polaroid-caption">welcome kavya...the most beautiful,prettie and cutieee ✨</p>
+          <p class="polaroid-date">Forever Cherished</p>
+        </article>
+
+        <!-- Polaroid Photo 2 -->
+        <article class="polaroid-card" onclick="openPhotoModal(this)">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-img-wrapper">
+            <!-- REPLACE URL HERE: Photo 2 -->
+            <img class="polaroid-img" 
+                 src="photo2.jpg" 
+                 alt="Unforgettable memories" 
+                 loading="lazy">
+          </div>
+          <p class="polaroid-caption">meri sweet si jurney me tumhara swagat h..  💕</p>
+          <p class="polaroid-date">Sweet Memories</p>
+        </article>
+
+        <!-- Polaroid Photo 3 -->
+        <article class="polaroid-card" onclick="openPhotoModal(this)">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-img-wrapper">
+            <!-- REPLACE URL HERE: Photo 3 -->
+            <img class="polaroid-img" 
+                 src="photo3.jpg" 
+                 alt="Laughing together" 
+                 loading="lazy">
+          </div>
+          <p class="polaroid-caption">you are my dil ka sukoon ho🌸</p>
+          <p class="polaroid-date">Pure Happiness</p>
+        </article>
+
+        <!-- Polaroid Photo 4 -->
+        <article class="polaroid-card" onclick="openPhotoModal(this)">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-img-wrapper">
+            <!-- REPLACE URL HERE: Photo 4 -->
+            <img class="polaroid-img" 
+                 src="photo4.jpg" 
+                 alt="To forever and beyond" 
+                 loading="lazy">
+          </div>
+          <p class="polaroid-caption">jo kbhi sukoon deti hii nhi ho... 💖</p>
+          <p class="polaroid-date">Always & Forever</p>
+        </article>
+
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="reveal-actions">
+        <button class="btn-secondary" id="celebrateAgainBtn">
+          <span>🎉 Celebrate Again</span>
+        </button>
+        <button class="btn-secondary" id="editNameBtn">
+          <span>✏️ Change Name</span>
+        </button>
+        <button class="btn-secondary" id="replayGameBtn">
+          <span>🎈 Replay Balloons</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Photo Preview Modal -->
+  <div class="photo-modal" id="photoModal" onclick="closePhotoModal(event)">
+    <div class="photo-modal-content">
+      <button class="modal-close-btn" onclick="closePhotoModal(event)">&times;</button>
+      <img src="" alt="Enlarged photo" class="photo-modal-img" id="modalImg">
+      <p class="photo-modal-caption" id="modalCaption"></p>
+    </div>
+  </div>
+
+  <!-- Name Edit Modal -->
+  <div class="edit-modal" id="nameModal">
+    <div class="edit-box">
+      <h3>Change Birthday Name</h3>
+      <input type="text" id="nameInput" class="edit-input" placeholder="Enter name..." maxlength="25">
+      <div style="display:flex; gap:10px; justify-content:center;">
+        <button class="btn-secondary" id="saveNameBtn" style="background:#ff758c; color:#fff; border:none;">Save</button>
+        <button class="btn-secondary" id="cancelNameBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT: INTERACTION, AUDIO SYNTH, BALLOON PHYSICS & CONFETTI
+       ========================================================================== -->
+  <script>
+    /* ========================================================================
+       1. WEB AUDIO API SYNTHESIZER (No external audio file dependencies)
+       ======================================================================== */
+    class SoundFX {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+        this.musicPlaying = false;
+        this.melodyTimer = null;
+        this.masterGain = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.setValueAtTime(1.0, this.ctx.currentTime);
+            this.masterGain.connect(this.ctx.destination);
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      setMuted(muted) {
+        this.enabled = !muted;
+        if (this.masterGain && this.ctx) {
+          this.masterGain.gain.setTargetAtTime(this.enabled ? 1.0 : 0.0, this.ctx.currentTime, 0.05);
+        }
+      }
+
+      // Play soft sparkling chime / music box note
+      playChime(freq = 587.33, duration = 0.5, volume = 0.16) {
+        if (!this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          // Delicate subtle vibraphone overtone
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.002, now + duration);
+
+          gain.gain.setValueAtTime(volume, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+          osc.connect(gain);
+          gain.connect(this.masterGain || this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + duration);
+        } catch (e) {
+          console.warn('Audio play failed', e);
+        }
+      }
+
+      // Play realistic balloon pop sound: pitch drop + burst noise
+      playPopSound() {
+        if (!this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          
+          // Low punch
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(30, now + 0.14);
+
+          gain.gain.setValueAtTime(0.45, now);
+          gain.gain.exponentialRampToValueAtTime(0.005, now + 0.14);
+
+          osc.connect(gain);
+          gain.connect(this.masterGain || this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.14);
+
+          // White noise burst
+          const bufferSize = Math.floor(this.ctx.sampleRate * 0.09);
+          const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+          }
+
+          const noise = this.ctx.createBufferSource();
+          noise.buffer = buffer;
+          const noiseGain = this.ctx.createGain();
+          noiseGain.gain.setValueAtTime(0.4, now);
+          noiseGain.gain.exponentialRampToValueAtTime(0.005, now + 0.09);
+
+          noise.connect(noiseGain);
+          noiseGain.connect(this.masterGain || this.ctx.destination);
+          noise.start(now);
+        } catch (e) {
+          console.warn('Audio pop error', e);
+        }
+      }
+
+      // Victory celebration fanfare chord
+      playFanfare() {
+        if (!this.ctx) return;
+        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // C5, E5, G5, C6, E6
+        notes.forEach((freq, index) => {
+          setTimeout(() => {
+            this.playChime(freq, 0.9, 0.2);
+          }, index * 110);
+        });
+      }
+
+      // Gentle ambient romantic music box loop
+      startAmbientMusic() {
+        if (this.musicPlaying) return;
+        this.musicPlaying = true;
+        
+        // Gentle romantic melody notes (frequencies in Hz)
+        const melody = [
+          { f: 523.25, d: 450 }, // C5
+          { f: 659.25, d: 450 }, // E5
+          { f: 783.99, d: 450 }, // G5
+          { f: 659.25, d: 450 }, // E5
+          { f: 880.00, d: 500 }, // A5
+          { f: 783.99, d: 650 }, // G5
+          { f: 659.25, d: 450 }, // E5
+          { f: 587.33, d: 650 }, // D5
+          { f: 523.25, d: 800 }  // C5
+        ];
+
+        let noteIdx = 0;
+        const playNext = () => {
+          if (!this.musicPlaying) return;
+          const current = melody[noteIdx];
+          this.playChime(current.f, current.d / 1000 * 1.5, 0.08);
+          noteIdx = (noteIdx + 1) % melody.length;
+          
+          const pause = (noteIdx === 0) ? 2200 : current.d + 100;
+          this.melodyTimer = setTimeout(playNext, pause);
+        };
+
+        playNext();
+      }
+
+      stopAmbientMusic() {
+        this.musicPlaying = false;
+        if (this.melodyTimer) clearTimeout(this.melodyTimer);
+      }
+    }
+
+    const sound = new SoundFX();
+
+    // Sound toggle button
+    const soundToggle = document.getElementById('soundToggle');
+    const soundIcon = document.getElementById('soundIcon');
+    soundToggle.addEventListener('click', () => {
+      sound.init();
+      sound.setMuted(sound.enabled);
+      soundIcon.textContent = sound.enabled ? '🔊' : '🔇';
+    });
+
+    /* ========================================================================
+       2. BACKGROUND SPARKLE PARTICLES (Canvas)
+       ======================================================================== */
+    const sparkleCanvas = document.getElementById('sparkle-canvas');
+    const sCtx = sparkleCanvas.getContext('2d');
+    let sparkles = [];
+
+    function resizeSparkleCanvas() {
+      sparkleCanvas.width = window.innerWidth;
+      sparkleCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeSparkleCanvas);
+    resizeSparkleCanvas();
+
+    class Sparkle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * sparkleCanvas.width;
+        this.y = Math.random() * sparkleCanvas.height;
+        this.size = Math.random() * 2 + 0.8;
+        this.alpha = Math.random() * 0.7 + 0.2;
+        this.speed = Math.random() * 0.4 + 0.2;
+        this.pulseSpeed = Math.random() * 0.03 + 0.01;
+        this.color = Math.random() > 0.5 ? '#ffd1dc' : '#e9d5ff';
+      }
+      update() {
+        this.y -= this.speed;
+        this.alpha += Math.sin(Date.now() * this.pulseSpeed) * 0.01;
+        if (this.y < -10 || this.alpha <= 0) {
+          this.reset();
+          this.y = sparkleCanvas.height + 10;
+        }
+      }
+      draw() {
+        sCtx.save();
+        sCtx.beginPath();
+        sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        sCtx.fillStyle = this.color;
+        sCtx.globalAlpha = Math.max(0.1, Math.min(0.8, this.alpha));
+        sCtx.shadowBlur = 8;
+        sCtx.shadowColor = this.color;
+        sCtx.fill();
+        sCtx.restore();
+      }
+    }
+
+    for (let i = 0; i < 40; i++) {
+      sparkles.push(new Sparkle());
+    }
+
+    function animateSparkles() {
+      sCtx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+      sparkles.forEach(s => {
+        s.update();
+        s.draw();
+      });
+      requestAnimationFrame(animateSparkles);
+    }
+    animateSparkles();
+
+    /* ========================================================================
+       3. APP FLOW CONTROLLER
+       ======================================================================== */
+    const startScreen = document.getElementById('startScreen');
+    const startBtn = document.getElementById('startBtn');
+    const messageSequence = document.getElementById('messageSequence');
+    const msg1 = document.getElementById('msg1');
+    const msg2 = document.getElementById('msg2');
+    const msg3 = document.getElementById('msg3');
+    const gameLayer = document.getElementById('gameLayer');
+    const surpriseScreen = document.getElementById('surpriseScreen');
+
+    // Balloon Palette (Romantic pastels)
+    const balloonColors = [
+      { bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)', shadow: '#ff758c' },
+      { bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)', shadow: '#c084fc' },
+      { bg: 'linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)', shadow: '#ff477e' },
+      { bg: 'linear-gradient(135deg, #fdcbf1 0%, #e6cbfd 100%)', shadow: '#d8b4e2' },
+      { bg: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)', shadow: '#a855f7' }
+    ];
+
+    let poppedCount = 0;
+    const totalBalloons = 5;
+    let balloonElements = [];
+    let balloonAnimFrames = [];
+
+    // START FLOW ON BUTTON CLICK
+    startBtn.addEventListener('click', () => {
+      sound.init();
+      sound.playChime(659.25, 0.4);
+      sound.startAmbientMusic();
+
+      // 1. Hide start screen
+      startScreen.classList.add('hidden');
+
+      // 2. Play sequential message animation
+      setTimeout(playMessageSequence, 600);
+    });
+
+    function playMessageSequence() {
+      const messages = [
+        { el: msg1, duration: 2400, tone: 523.25 },
+        { el: msg2, duration: 2400, tone: 587.33 },
+        { el: msg3, duration: 2500, tone: 659.25 }
+      ];
+
+      let delay = 0;
+
+      messages.forEach((m, index) => {
+        // Fade In
+        setTimeout(() => {
+          m.el.classList.add('active');
+          sound.playChime(m.tone, 0.35);
+        }, delay);
+
+        // Fade Out
+        setTimeout(() => {
+          m.el.classList.remove('active');
+          m.el.classList.add('exit');
+        }, delay + m.duration - 500);
+
+        delay += m.duration;
+      });
+
+      // After last message fades out, start mini balloon game
+      setTimeout(() => {
+        messageSequence.style.display = 'none';
+        startGame();
+      }, delay);
+    }
+
+    /* ========================================================================
+       4. MINI GAME: 5 FLOATING BALLOONS
+       ======================================================================== */
+    function startGame() {
+      gameLayer.classList.add('active');
+      poppedCount = 0;
+      updateHud();
+
+      // Clear any previous balloons
+      clearBalloons();
+
+      // Spawn 5 balloons spread horizontally
+      const positions = calculateHorizontalSlots(totalBalloons);
+
+      for (let i = 0; i < totalBalloons; i++) {
+        setTimeout(() => {
+          createBalloon(i, positions[i]);
+        }, i * 350);
+      }
+    }
+
+    function calculateHorizontalSlots(count) {
+      const slots = [];
+      const padding = 12; // percentage padding on edges
+      const usable = 100 - (padding * 2);
+      const step = usable / (count - 1);
+
+      for (let i = 0; i < count; i++) {
+        const base = padding + (step * i);
+        // Add subtle organic jitter
+        const jitter = (Math.random() * 8) - 4;
+        slots.push(Math.max(8, Math.min(92, base + jitter)));
+      }
+      // Shuffle positions slightly
+      return slots.sort(() => Math.random() - 0.5);
+    }
+
+    function createBalloon(index, leftPercent) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'balloon-wrapper';
+      wrapper.id = `balloon-${index}`;
+
+      const colorData = balloonColors[index % balloonColors.length];
+
+      wrapper.innerHTML = `
+        <div class="balloon-body" style="background: ${colorData.bg}; box-shadow: inset 10px 10px 20px rgba(255,255,255,0.45), 0 10px 30px ${colorData.shadow}66;">
+          <div class="balloon-shine"></div>
+          <div class="balloon-knot" style="background: ${colorData.shadow};"></div>
+          <div class="balloon-string"></div>
+        </div>
+      `;
+
+      wrapper.style.left = `${leftPercent}%`;
+      gameLayer.appendChild(wrapper);
+
+      // Physics variables for floating
+      let posY = -160; // starts below screen
+      const speed = 1.1 + Math.random() * 0.9; // float speed
+      const swayAmplitude = 20 + Math.random() * 25;
+      const swaySpeed = 0.02 + Math.random() * 0.015;
+      let angle = Math.random() * Math.PI * 2;
+
+      let isPopped = false;
+
+      function floatBalloon() {
+        if (isPopped) return;
+        posY += speed;
+        angle += swaySpeed;
+
+        const currentSway = Math.sin(angle) * swayAmplitude;
+        wrapper.style.bottom = `${posY}px`;
+        wrapper.style.transform = `translateX(${currentSway}px) rotate(${Math.sin(angle) * 7}deg)`;
+
+        // If it floats off the top screen, wrap around smoothly
+        const screenHeight = window.innerHeight;
+        if (posY > screenHeight + 80) {
+          posY = -140;
+        }
+
+        const reqId = requestAnimationFrame(floatBalloon);
+        balloonAnimFrames.push(reqId);
+      }
+
+      requestAnimationFrame(floatBalloon);
+
+      // Handle Pop Click / Tap
+      const popHandler = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isPopped) return;
+        isPopped = true;
+
+        sound.playPopSound();
+
+        // Get coordinates for burst effect
+        const rect = wrapper.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        createPopBurst(centerX, centerY, colorData.shadow);
+        showFloatingHeart(centerX, centerY);
+
+        // Hide popped balloon
+        wrapper.style.display = 'none';
+        poppedCount++;
+        updateHud();
+
+        // Check if all balloons popped
+        if (poppedCount >= totalBalloons) {
+          triggerGrandReveal();
+        }
+      };
+
+      wrapper.addEventListener('pointerdown', popHandler);
+      balloonElements.push(wrapper);
+    }
+
+    function clearBalloons() {
+      balloonAnimFrames.forEach(id => cancelAnimationFrame(id));
+      balloonAnimFrames = [];
+      balloonElements.forEach(b => {
+        if (b && b.parentNode) b.parentNode.removeChild(b);
+      });
+      balloonElements = [];
+    }
+
+    function updateHud() {
+      const hearts = document.querySelectorAll('.hud-heart');
+      hearts.forEach((heart, idx) => {
+        if (idx < poppedCount) {
+          heart.classList.add('popped');
+        } else {
+          heart.classList.remove('popped');
+        }
+      });
+    }
+
+    /* Pop Particles Burst */
+    function createPopBurst(x, y, color) {
+      const particleCount = 18;
+      for (let i = 0; i < particleCount; i++) {
+        const p = document.createElement('div');
+        p.className = 'pop-particle';
+        
+        const size = Math.random() * 8 + 4;
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.backgroundColor = Math.random() > 0.4 ? color : '#ffd1dc';
+        p.style.left = `${x}px`;
+        p.style.top = `${y}px`;
+
+        const rad = (Math.PI * 2 / particleCount) * i + (Math.random() * 0.4);
+        const dist = 40 + Math.random() * 70;
+        const tx = Math.cos(rad) * dist;
+        const ty = Math.sin(rad) * dist;
+
+        p.style.setProperty('--tx', `${tx}px`);
+        p.style.setProperty('--ty', `${ty}px`);
+
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 750);
+      }
+    }
+
+    /* Floating Heart on Pop */
+    function showFloatingHeart(x, y) {
+      const floater = document.createElement('div');
+      floater.className = 'pop-number';
+      floater.textContent = '+1 💖';
+      floater.style.left = `${x - 20}px`;
+      floater.style.top = `${y - 15}px`;
+      document.body.appendChild(floater);
+      setTimeout(() => floater.remove(), 800);
+    }
+
+    /* ========================================================================
+       5. GRAND REVEAL: CONFETTI & SURPRISE SCREEN
+       ======================================================================== */
+    function triggerGrandReveal() {
+      // Fanfare celebration sound
+      setTimeout(() => {
+        sound.playFanfare();
+      }, 200);
+
+      // Launch full celebratory confetti
+      launchConfettiStorm();
+
+      // Hide game HUD & game layer
+      setTimeout(() => {
+        gameLayer.classList.remove('active');
+        clearBalloons();
+      }, 700);
+
+      // Fade in Surprise Screen
+      setTimeout(() => {
+        surpriseScreen.classList.add('active');
+        surpriseScreen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 900);
+    }
+
+    function launchConfettiStorm() {
+      // If canvas-confetti library loaded
+      if (typeof confetti === 'function') {
+        const count = 200;
+        const defaults = {
+          origin: { y: 0.7 },
+          colors: ['#ff758c', '#ff7eb3', '#c084fc', '#e9d5ff', '#fde68a', '#ff477e'],
+          disableForReducedMotion: true
+        };
+
+        function fire(particleRatio, opts) {
+          confetti(Object.assign({}, defaults, opts, {
+            particleCount: Math.floor(count * particleRatio)
+          }));
+        }
+
+        // Multistage grand explosion
+        fire(0.25, { spread: 26, startVelocity: 55 });
+        fire(0.2, { spread: 60 });
+        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+        fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+        fire(0.1, { spread: 120, startVelocity: 45 });
+
+        // Left & right cannons
+        setTimeout(() => {
+          confetti({
+            particleCount: 70,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0, y: 0.65 },
+            colors: ['#ff758c', '#ffd1dc', '#c084fc']
+          });
+          confetti({
+            particleCount: 70,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1, y: 0.65 },
+            colors: ['#ff758c', '#ffd1dc', '#c084fc']
+          });
+        }, 400);
+
+      } else {
+        // Fallback confetti if CDN is blocked
+        simpleCanvasConfettiFallback();
+      }
+    }
+
+    // Fallback lightweight canvas confetti
+    function simpleCanvasConfettiFallback() {
+      for (let i = 0; i < 80; i++) {
+        createPopBurst(
+          Math.random() * window.innerWidth,
+          Math.random() * (window.innerHeight * 0.5),
+          ['#ff758c', '#ff7eb3', '#c084fc', '#ffd1dc'][Math.floor(Math.random() * 4)]
+        );
+      }
+    }
+
+    /* ========================================================================
+       6. POLAROID MODAL & INTERACTION
+       ======================================================================== */
+    const photoModal = document.getElementById('photoModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalCaption = document.getElementById('modalCaption');
+
+    window.openPhotoModal = function(card) {
+      sound.playChime(784, 0.25);
+      const img = card.querySelector('.polaroid-img');
+      const caption = card.querySelector('.polaroid-caption');
+      
+      modalImg.src = img.src;
+      modalCaption.textContent = caption.textContent;
+      photoModal.classList.add('active');
+    };
+
+    window.closePhotoModal = function(e) {
+      if (e.target === photoModal || e.target.classList.contains('modal-close-btn')) {
+        photoModal.classList.remove('active');
+      }
+    };
+
+    // Close on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        photoModal.classList.remove('active');
+        nameModal.classList.remove('active');
+      }
+    });
+
+    /* ========================================================================
+       7. NAME CUSTOMIZATION MODAL & QUERY PARAMETER SUPPORT
+       ======================================================================== */
+    const personName = document.getElementById('personName');
+    const editNameBtn = document.getElementById('editNameBtn');
+    const nameModal = document.getElementById('nameModal');
+    const nameInput = document.getElementById('nameInput');
+    const saveNameBtn = document.getElementById('saveNameBtn');
+    const cancelNameBtn = document.getElementById('cancelNameBtn');
+
+    // Check URL parameters for custom name: ?name=Sarah
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramName = urlParams.get('name');
+    if (paramName) {
+      personName.textContent = paramName.trim();
+    }
+
+    function openNameEditor() {
+      nameInput.value = personName.textContent.trim();
+      nameModal.classList.add('active');
+      nameInput.focus();
+    }
+
+    personName.addEventListener('click', openNameEditor);
+    editNameBtn.addEventListener('click', openNameEditor);
+
+    saveNameBtn.addEventListener('click', () => {
+      const val = nameInput.value.trim();
+      if (val) {
+        personName.textContent = val;
+        sound.playChime(659.25, 0.3);
+      }
+      nameModal.classList.remove('active');
+    });
+
+    cancelNameBtn.addEventListener('click', () => {
+      nameModal.classList.remove('active');
+    });
+
+    /* ========================================================================
+       8. CELEBRATE AGAIN & REPLAY
+       ======================================================================== */
+    document.getElementById('celebrateAgainBtn').addEventListener('click', () => {
+      sound.playFanfare();
+      launchConfettiStorm();
+    });
+
+    document.getElementById('replayGameBtn').addEventListener('click', () => {
+      surpriseScreen.classList.remove('active');
+      startGame();
+    });
+
+  </script>
+</body>
+</html>
